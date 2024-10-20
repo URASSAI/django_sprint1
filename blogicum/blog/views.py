@@ -1,8 +1,8 @@
 from django.shortcuts import render
-
+from django.http import Http404
 
 # Словарь с постами.
-posts = [
+posts: list[{dict}] = [
     {
         'id': 0,
         'location': 'Остров отчаянья',
@@ -45,23 +45,24 @@ posts = [
     },
 ]
 
+POSTS_ID = {post['id']: post for post in posts}
+
 
 def index(request):
     """Функция обработчик запроса index."""
-    index_template = 'blog/index.html'
     context = {'posts': posts}
-    return render(request, index_template, context)
+    return render(request, 'blog/index.html', context)
 
 
-def post_detail(request, id):
+def post_detail(request, post_id):
     """Функция обработчик запроса detail."""
-    template = 'blog/detail.html'
-    context = {'post': posts[id]}
-    return render(request, template, context)
+    context = {'post': POSTS_ID[post_id]}
+    if post_id not in POSTS_ID.keys():
+        raise Http404('Запись не найдена')
+    return render(request, 'blog/detail.html', context)
 
 
 def category_posts(request, category):
     """Функция обработчик запроса category."""
-    template = 'blog/category.html'
     context = {'category_post': category}
-    return render(request, template, context)
+    return render(request, 'blog/category.html', context)
