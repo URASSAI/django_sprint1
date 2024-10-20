@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 
+# Словарь с постами.
 posts = [
     {
         'id': 0,
@@ -45,18 +46,22 @@ posts = [
 ]
 
 
-
-def index(request): 
-    index_template = 'blog/index.html' 
-    context = {'posts': posts} 
+def index(request):
+    """Функция обработчик запроса index."""
+    index_template = 'blog/index.html'
+    context = {'posts': posts}
     return render(request, index_template, context)
 
+
 def post_detail(request, id):
+    """Функция обработчик запроса detail."""
     template = 'blog/detail.html'
     context = {'post': posts[id]}
     return render(request, template, context)
 
+
 def category_posts(request, category):
+    """Функция обработчик запроса category."""
     template = 'blog/category.html'
     context = {'category_post': category}
     return render(request, template, context)
